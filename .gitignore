@@ -1,0 +1,13 @@
+*
+!/**/
+!*.*
+*.out
+*.d
+*.exe
+*.o
+*.os
+crpto/tests/aestst
+crpto/tests/libtrezor-crypto.so
+crpto/tests/test_check
+crpto/tests/test_openssl
+crpto/tests/test_speed

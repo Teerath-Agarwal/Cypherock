@@ -1189,8 +1189,10 @@ static void bn_inverse_fast(bignum256 *x, const bignum256 *prime) {
 // The ternary operator for pointers with constant control flow
 // BN_INVERSE_FAST_TERNARY(c, t, f) = t if c else f
 // Very nasty hack, sorry for that
-#define BN_INVERSE_FAST_TERNARY(c, t, f) \
+
+// #define BN_INVERSE_FAST_TERNARY(c, t, f) \
   ((void *)(((c) & (uintptr_t)(t)) | (~(c) & (uintptr_t)(f))))
+#define BN_INVERSE_FAST_TERNARY(c, t, f) ((c) ? (t) : (f))
 
     bn_subtract(BN_INVERSE_FAST_TERNARY(b3, &u, &v),
                 BN_INVERSE_FAST_TERNARY(

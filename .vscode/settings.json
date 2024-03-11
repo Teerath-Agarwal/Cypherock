@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "ecdsa.h": "c",
+        "bignum.h": "c",
+        "options.h": "c",
+        "script.h": "c",
+        "memzero.h": "c",
+        "cstdlib": "c",
+        "algorithm": "c"
+    }
+}
