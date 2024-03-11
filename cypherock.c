@@ -1,12 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "alice.h"
-#include "./crypto/bignum.h"
-#include "bob.h"
+#include "cypherock.h"
 
 void bn_set_rand(bignum256 *x){
-    srand(time(NULL));
     int t;
     uint8_t r[32];
     for (int i = 0; i < 32; i++) {
@@ -14,7 +8,8 @@ void bn_set_rand(bignum256 *x){
             t = rand();
         r[i] = (t >> ((i % 4) * 8)) & 0xFF;
     }
-    bn_read_be(r, &x);
+    bn_read_be(r, x);
+    bn_mod(x, &secp256k1.prime);
 }
 
 uint8_t hex_to_bin(const char x){
@@ -38,37 +33,4 @@ void str_to_bn(const char *input_str, bignum256 *out_num){
         printf("%d ", num_be[i]);
     }
     bn_read_le(num_be, out_num);
-}
-
-void exec__(){
-    int mode;
-    scanf("%d", &mode);
-    bignum256 a = {0}, b = {0};
-    if (mode){
-        /*
-        char stra[65], strb[65];
-        getchar();
-        fgets(stra, sizeof(stra), stdin);
-        fgets(strb, sizeof(strb), stdin);
-        str_to_bn(stra, &a);
-        str_to_bn(strb, &b);
-        */
-       uint64_t a_,b_;
-       scanf("%lld %lld", &a_, &b_);
-       bn_read_uint64(a_, &a);
-       bn_read_uint64(b_, &b);
-    }
-    else {
-        bn_set_rand(&a);
-        bn_set_rand(&b);
-    }
-
-}
-
-int32_t main(){
-    int T;
-    scanf("%d", &T);
-    while (T--)
-    exec__();
-    return 0;
 }

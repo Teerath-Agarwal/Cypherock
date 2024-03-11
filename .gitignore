@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.os
+.vscode/
 crpto/tests/aestst
 crpto/tests/libtrezor-crypto.so
 crpto/tests/test_check
