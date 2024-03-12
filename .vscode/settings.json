@@ -9,6 +9,8 @@
         "cstdlib": "c",
         "algorithm": "c",
         "main1.h": "c",
-        "bob.h": "c"
+        "bob.h": "c",
+        "secp256k1.h": "c",
+        "time.h": "c"
     }
 }

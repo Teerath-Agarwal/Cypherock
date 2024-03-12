@@ -1,6 +1,9 @@
 #include "cypherock.h"
 
-void bn_set_rand(bignum256 *x){
+curve_point alice_public_key = {{0},{0}};
+curve_point bob_public_key = {{0},{0}};
+
+void bn_set_rand(bignum256 *x, const bignum256 *nf){
     int t;
     uint8_t r[32];
     for (int i = 0; i < 32; i++) {
@@ -9,7 +12,7 @@ void bn_set_rand(bignum256 *x){
         r[i] = (t >> ((i % 4) * 8)) & 0xFF;
     }
     bn_read_be(r, x);
-    bn_mod(x, &secp256k1.prime);
+    bn_mod(x, nf);
 }
 
 uint8_t hex_to_bin(const char x){
