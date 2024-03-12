@@ -15,6 +15,18 @@ void bn_set_rand(bignum256 *x, const bignum256 *nf){
     bn_mod(x, nf);
 }
 
+void point_subt(const ecdsa_curve *curve, curve_point *cp1,
+               const curve_point *cp2){
+    curve_point temp;
+    point_copy(cp2, &temp);
+    bn_negate(&temp.y);
+    point_add(&secp256k1, &temp, cp1);
+}
+
+void get_hash(const bignum256 *x, bignum256 *res){
+    
+}
+
 uint8_t hex_to_bin(const char x){
     if (x<='9' && x>='0') return (uint8_t)(x - '0');
     else if (x=='\0') return (uint8_t)(1<<4);
@@ -36,4 +48,33 @@ void str_to_bn(const char *input_str, bignum256 *out_num){
         printf("%d ", num_be[i]);
     }
     bn_read_le(num_be, out_num);
+}
+
+void assertions(){
+    bignum256 x = {0};
+    bn_set_rand(&x, &secp256k1.order);
+    curve_point r, nr, nr2;
+    
+    // Scalar multiplication = point multiplication with G
+    scalar_multiply(&secp256k1, &x, &r);
+    point_multiply(&secp256k1, &x, &secp256k1.G, &nr);
+    assert(point_is_equal(&r,&nr));
+    
+    // k*G = -((-k)*G)
+    bn_negate(&x);
+    scalar_multiply(&secp256k1, &x, &nr);
+    assert(point_is_negative_of(&r,&nr)); // Not sure about this
+    
+    // P(x,y) = -Q(x,-y)
+    point_copy(&r, &nr2);
+    bn_negate(&nr2.y);
+    assert(point_is_negative_of(&r,&nr2));
+    
+    // (P + Q) - P = Q
+    bn_set_rand(&x, &secp256k1.order);
+    scalar_multiply(&secp256k1, &x, &nr);
+    point_copy(&nr, &nr2);
+    point_add(&secp256k1, &r, &nr);
+    point_subt(&secp256k1, &nr, &r);
+    assert(point_is_equal(&nr2,&nr));
 }

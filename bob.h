@@ -6,6 +6,6 @@
 void input_b();
 void gen_b();
 void bob_gen_priv_key();
-void bob_gen_public_key(int idx);
+void bob_gen_public_key(uint16_t idx);
 
 #endif

@@ -2,6 +2,7 @@
 
 int32_t main(){
     srand(time(NULL));
+    assertions();
     int mode;
     scanf("%d", &mode);
     if (mode){
