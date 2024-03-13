@@ -1,8 +1,9 @@
 #include "alice.h"
 
 bignum256 a = {0};
-bignum256 private_key = {0};
-bignum256 c[LEN];
+bignum256 c_ = {0};
+static bignum256 private_key = {0};
+static bignum256 c[LEN];
 
 void input_a(){
     uint64_t a_;
@@ -44,4 +45,9 @@ void get_encrypted_messages(int idx, bignum256 *enc_m){
         get_hash(&key[i].y, &k[i]);
         bn_xor(&enc_m[i], &k[i], &enc_m[i]);
     }
+}
+
+void calculate_c(){
+    calc_additive_share(c, &c_);
+    bn_negate(&c_);
 }

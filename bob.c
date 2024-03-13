@@ -1,8 +1,9 @@
 #include "bob.h"
 
 bignum256 b = {0};
-bignum256 private_key = {0};
-bignum256 d[LEN];
+bignum256 d_ = {0};
+static bignum256 private_key = {0};
+static bignum256 d[LEN];
 
 void input_b(){
     uint64_t b_;
@@ -25,7 +26,7 @@ void bob_gen_public_key(uint16_t idx){
     }
 }
 
-void decrypted_message(int idx, const bignum256 *enc_m){
+void decrypt_message(int idx, const bignum256 *enc_m){
     curve_point key = {{0},{0}};
     bignum256 kr = {0};
     point_multiply(&secp256k1, &private_key, &alice_public_key, &key);
@@ -35,4 +36,8 @@ void decrypted_message(int idx, const bignum256 *enc_m){
     bn_mod(&key.y, &secp256k1.prime);
     get_hash(&key.y, &kr);
     bn_xor(&d[idx], &kr, &enc_m[i]);
+}
+
+void calculate_d(){
+    calc_additive_share(d, &d_);
 }

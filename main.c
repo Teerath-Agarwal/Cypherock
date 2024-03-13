@@ -1,6 +1,7 @@
 #include "cypherock.h"
 #include "alice.h"
 #include "bob.h"
+#include "checker.h"
 
 int32_t main(){
     srand(time(NULL));
@@ -30,7 +31,10 @@ int32_t main(){
         bob_gen_public_key(i);
         bignum256 encrypted_messages[2];
         get_encrypted_messages(i, encrypted_messages);
-        decrypted_message(i, encrypted_messages);
+        decrypt_message(i, encrypted_messages);
     }
+    calculate_c();
+    calculate_d();
+    validate_result();
     return 0;
 }
