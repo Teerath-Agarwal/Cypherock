@@ -28,8 +28,26 @@ void point_subt(const ecdsa_curve *curve, curve_point *cp1,
                const curve_point *cp2){
     curve_point temp;
     point_copy(cp2, &temp);
-    bn_negate(&temp.y);
+    bn_negate(&temp.y, &secp256k1.prime);
     point_add(curve, &temp, cp1);
+}
+
+int point_is_on_curve(const curve_point *point) {
+    bignum256 y_square, x_cubed;
+
+    bn_copy(&point->y, &y_square);
+    bn_multiply(&point->y, &y_square, &secp256k1.prime);
+    bn_mod(&y_square, &secp256k1.prime);
+
+    bn_copy(&point->x, &x_cubed);
+    bn_multiply(&point->x, &x_cubed, &secp256k1.prime);
+    bn_multiply(&point->x, &x_cubed, &secp256k1.prime);
+
+    bn_addi(&x_cubed, 7);
+    bn_mod(&x_cubed, &secp256k1.prime);
+
+    // Check if y^2 = (x^3 + 7) % prime
+    return bn_is_equal(&y_square, &x_cubed);
 }
 
 void get_hash(const bignum256 *x, bignum256 *res){
@@ -76,15 +94,17 @@ void assertions(){
     scalar_multiply(&secp256k1, &x, &r);
     point_multiply(&secp256k1, &x, &secp256k1.G, &nr);
     assert(point_is_equal(&r,&nr));
-    
-    // k*G = -((-k)*G)
-    bn_negate(&x);
+    assert(point_is_on_curve(&r));
+
+    // k*G = -((-k)*G) : works when k is negated wrt order, not prime.
+    bn_negate(&x, &secp256k1.order);
     scalar_multiply(&secp256k1, &x, &nr);
-    assert(point_is_negative_of(&r,&nr)); // Not sure about this
+    assert(point_is_negative_of(&r,&nr));
     
     // P(x,y) = -Q(x,-y)
     point_copy(&r, &nr2);
-    bn_negate(&nr2.y);
+    bn_negate(&nr2.y, &secp256k1.prime);
+    assert(point_is_on_curve(&nr2));
     assert(point_is_negative_of(&r,&nr2));
     
     // (P + Q) - P = Q

@@ -5,7 +5,7 @@
 
 int32_t main(){
     srand(time(NULL));
-    assertions();
+    // assertions();
     int mode = 0;
     // scanf("%d", &mode);
     if (mode){

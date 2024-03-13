@@ -49,5 +49,5 @@ void get_encrypted_messages(int idx, bignum256 *enc_m){
 
 void calculate_c(){
     calc_additive_share(c, &c_);
-    bn_negate(&c_);
+    bn_negate(&c_, &secp256k1.prime);
 }
