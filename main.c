@@ -23,6 +23,14 @@ int32_t main(){
         gen_a();
         gen_b();
     }
-    alice_gen_priv_key();
+    for (int i=0; i<LEN; i++){
+        alice_gen_priv_key();
+        bob_gen_priv_key();
+        alice_gen_public_key();
+        bob_gen_public_key(i);
+        bignum256 encrypted_messages[2];
+        get_encrypted_messages(i, encrypted_messages);
+        decrypted_message(i, encrypted_messages);
+    }
     return 0;
 }
