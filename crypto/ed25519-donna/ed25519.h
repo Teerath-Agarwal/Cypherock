@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#include "options.h"
+#include "./../options.h"
 
 #if defined(__cplusplus)
 extern "C" {

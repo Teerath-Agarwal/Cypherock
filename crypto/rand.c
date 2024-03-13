@@ -23,10 +23,9 @@
 
 #include "rand.h"
 
-#ifdef USE_INSECURE_PRNG
+// #ifdef USE_INSECURE_PRNG
 
-#pragma message( \
-    "NOT SUITABLE FOR PRODUCTION USE! Replace random32() function with your own secure code.")
+// #pragma message("NOT SUITABLE FOR PRODUCTION USE! Replace random32() function with your own secure code.")
 
 // The following code is not supposed to be used in a production environment.
 // It's included only to make the library testable.
@@ -48,7 +47,7 @@ uint32_t random32(void) {
   return seed;
 }
 
-#endif /* USE_INSECURE_PRNG */
+// #endif /* USE_INSECURE_PRNG */
 
 //
 // The following code is platform independent
