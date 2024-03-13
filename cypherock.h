@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
-// #include "alice.h"
-// #include "bob.h"
 #include "./crypto/bignum.h"
 #include "./crypto/ecdsa.h"
 #include "./crypto/secp256k1.h"
