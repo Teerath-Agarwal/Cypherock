@@ -1,7 +1,7 @@
 #include "cypherock.h"
 
-curve_point alice_public_key = {{0},{0}};
-curve_point bob_public_key = {{0},{0}};
+curve_point alice_public_key;
+curve_point bob_public_key;
 
 void bn_set_rand(bignum256 *x, const bignum256 *nf){
     int t;
@@ -29,7 +29,7 @@ void point_subt(const ecdsa_curve *curve, curve_point *cp1,
     curve_point temp;
     point_copy(cp2, &temp);
     bn_negate(&temp.y);
-    point_add(&secp256k1, &temp, cp1);
+    point_add(curve, &temp, cp1);
 }
 
 void get_hash(const bignum256 *x, bignum256 *res){

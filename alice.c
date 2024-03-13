@@ -7,7 +7,7 @@ static bignum256 c[LEN];
 
 void input_a(){
     uint64_t a_;
-    scanf("%lld", &a_);
+    scanf("%lu", &a_);
     bn_read_uint64(a_, &a);
 }
 

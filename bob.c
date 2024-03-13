@@ -7,7 +7,7 @@ static bignum256 d[LEN];
 
 void input_b(){
     uint64_t b_;
-    scanf("%lld", &b_);
+    scanf("%lu", &b_);
     bn_read_uint64(b_, &b);
 }
 
@@ -27,7 +27,7 @@ void bob_gen_public_key(uint16_t idx){
 }
 
 void decrypt_message(int idx, const bignum256 *enc_m){
-    curve_point key = {{0},{0}};
+    curve_point key;
     bignum256 kr = {0};
     point_multiply(&secp256k1, &private_key, &alice_public_key, &key);
     
