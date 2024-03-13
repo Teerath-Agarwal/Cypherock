@@ -2,7 +2,7 @@
 
 bignum256 b = {0};
 bignum256 private_key = {0};
-bignum256 d[256];
+bignum256 d[LEN];
 
 void input_b(){
     uint64_t b_;
@@ -23,4 +23,16 @@ void bob_gen_public_key(uint16_t idx){
     if (bn_testbit(&b, idx)) {
         point_add(&secp256k1, &alice_public_key, &bob_public_key);
     }
+}
+
+void decrypted_message(int idx, const bignum256 *enc_m){
+    curve_point key = {{0},{0}};
+    bignum256 kr = {0};
+    point_multiply(&secp256k1, &private_key, &alice_public_key, &key);
+    
+    int i = bn_testbit(&b, idx);
+    bn_multiply(&key.x, &key.y, &secp256k1.prime);
+    bn_mod(&key.y, &secp256k1.prime);
+    get_hash(&key.y, &kr);
+    bn_xor(&d[idx], &kr, &enc_m[i]);
 }

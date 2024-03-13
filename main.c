@@ -1,4 +1,6 @@
 #include "cypherock.h"
+#include "alice.h"
+#include "bob.h"
 
 int32_t main(){
     srand(time(NULL));
@@ -21,7 +23,6 @@ int32_t main(){
         gen_a();
         gen_b();
     }
-    // for (int i=BN_LIMBS-1; i>=0; i--) printf("%08x ", a.val[i]);
-
+    alice_gen_priv_key();
     return 0;
 }

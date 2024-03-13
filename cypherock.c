@@ -5,14 +5,23 @@ curve_point bob_public_key = {{0},{0}};
 
 void bn_set_rand(bignum256 *x, const bignum256 *nf){
     int t;
-    uint8_t r[32];
-    for (int i = 0; i < 32; i++) {
+    uint8_t r[LEN/8];
+    for (int i = 0; i < LEN/8; i++) {
         if (!(i % 4))
             t = rand();
         r[i] = (t >> ((i % 4) * 8)) & 0xFF;
     }
     bn_read_be(r, x);
     bn_mod(x, nf);
+}
+
+void bn_print(const bignum256 *x){
+    // Following code doesn't work. It prints the limbs in hexadecimal.
+    // We need the number either in decimal or hexadecimal format (better will be both)
+    // Give line breaks accordingly
+
+    // for (int i=BN_LIMBS-1; i>=0; i--)
+    //     printf("%08x ", a.val[i]);
 }
 
 void point_subt(const ecdsa_curve *curve, curve_point *cp1,
@@ -24,7 +33,14 @@ void point_subt(const ecdsa_curve *curve, curve_point *cp1,
 }
 
 void get_hash(const bignum256 *x, bignum256 *res){
-    
+    // res should contain the SHA3_256 hash of x. 
+    // Convert to array of unsigned char, 
+    // i.e., (unsigned char*) back and forth to use it
+}
+
+void calc_additive_share(const bignum256 *x, bignum256 *res){
+    // x is an array of length 256
+    // res = sigma (0 to 255) 2^i * x[i], in the modulo domain of prime.
 }
 
 uint8_t hex_to_bin(const char x){
@@ -34,6 +50,7 @@ uint8_t hex_to_bin(const char x){
 }
 
 // Doesn't work, confusion regarding positioning of bit and le or be
+// Not required anymore
 void str_to_bn(const char *input_str, bignum256 *out_num){
     uint8_t num_be[32];
     for (int i = 0; i<32; i++)
