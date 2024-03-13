@@ -1,3 +1,4 @@
+.vscode/
 *
 !/**/
 !*.*
@@ -6,9 +7,8 @@
 *.exe
 *.o
 *.os
-.vscode/
-crpto/tests/aestst
-crpto/tests/libtrezor-crypto.so
-crpto/tests/test_check
-crpto/tests/test_openssl
-crpto/tests/test_speed
+crypto/tests/aestst
+crypto/tests/libtrezor-crypto.so
+crypto/tests/test_check
+crypto/tests/test_openssl
+crypto/tests/test_speed
