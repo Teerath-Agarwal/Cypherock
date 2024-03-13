@@ -1,12 +1,9 @@
-.vscode/
-*
-!/**/
-!*.*
 *.out
 *.d
 *.exe
 *.o
 *.os
+.vscode/
 crypto/tests/aestst
 crypto/tests/libtrezor-crypto.so
 crypto/tests/test_check
