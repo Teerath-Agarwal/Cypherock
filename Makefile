@@ -21,27 +21,3 @@ $(EXECUTABLE): $(OBJ)
 
 clean:
 	rm -f $(OBJ) $(EXECUTABLE)
-
-
-
-# CC = gcc
-# CFLAGS = -Wall -Wextra -g
-# SRCDIR = .
-# CRYPTODIR = crypto
-# SRC = $(wildcard $(SRCDIR)/*.c) $(wildcard $(CRYPTODIR)/*.c)
-# OBJ = $(SRC:.c=.o)
-# DEPS = $(wildcard $(SRCDIR)/*.h) $(wildcard $(CRYPTODIR)/*.h)
-# EXECUTABLE = my_program
-
-# .PHONY: all clean
-
-# all: $(EXECUTABLE)
-
-# $(EXECUTABLE): $(OBJ)
-# 	$(CC) $(CFLAGS) $^ -o $@
-
-# %.o: %.c $(DEPS)
-# 	$(CC) $(CFLAGS) -c $< -o $@
-
-# clean:
-# 	rm -f $(OBJ) $(EXECUTABLE)

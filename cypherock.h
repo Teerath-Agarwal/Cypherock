@@ -35,9 +35,6 @@ void get_hash(const bignum256 *x, bignum256 *res);
 
 void calc_additive_share(const bignum256 *x, bignum256 *res);
 
-uint8_t hex_to_bin(const char x);
-void str_to_bn(const char *input_str, bignum256 *out_num);
-
 void assertions();
 
 #endif
