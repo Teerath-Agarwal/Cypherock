@@ -17,7 +17,7 @@ $ make
 
 * The first line of input shall contain a single integer `mode` which is either `0` or `1`.
 * If the input `mode` is `0`, the program generates two random 256-bit ingeters `a` and `b` and generates the corresponding output.
-* If the input `mode` is `1`, the user must input the two ingtegers `a`and `b`, limiting to the max value of unsigned 64-bit integer, ie.e, `18,446,744,073,709,551,615`.
+* If the input `mode` is `1`, the user must input the two 64-bit integers `a` and `b`, limiting to the max value of `18,446,744,073,709,551,615`.
 * The output format is self explanatory.
 
 ## Theory
@@ -41,7 +41,7 @@ There are separate files for the different parties involved, i.e., `Alice` and `
 * Generate Alice's public key `P_a = k_a * G` where `G` is is the base point of `secp256k1` elliptic curve.
 * Generate Bob's public key `P_b = b[i] * P_a + k_b * G` where `b[i]` is i-th LSB bit of `b`.
 * Alice generates two keys for encryption of two messages, `k_0 = SHA_256(k_a * P_b)` and `k_1 = SHA_256(k_a * (P_b - P_a))`.
-* Alice generates a random integer c[i]. the encrypted messages tranmitted are `M_0(k_0, c[i])` and `M_1(k_1, c[i] + a)`.
+* Alice generates a random integer `c[i]`. the encrypted messages tranmitted are `M_0(k_0, c[i])` and `M_1(k_1, c[i] + a)`.
 * Bob generates his key `k_r = k_b * P_a`, then decrypts the `M_{b[i]}` message from it and stores it as `d[i]`.
 * After the loop ends, `c = - sigma (0 to 255) 2^i * c[i]` and `d = sigma (0 to 255) 2^i * d[i]`.
 * Checker is called to validate the result.
