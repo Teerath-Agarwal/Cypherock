@@ -12,6 +12,9 @@
 #define LEN 256
 extern curve_point alice_public_key;
 extern curve_point bob_public_key;
+extern int mode;
+
+void pre();
 
 // Assumes x, prime are normalised and x <= prime
 static inline void bn_negate(bignum256 *x, const bignum256 *p){

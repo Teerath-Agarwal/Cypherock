@@ -6,8 +6,8 @@
 int32_t main(){
     srand(time(NULL));
     // assertions();
-    int mode = 0;
-    // scanf("%d", &mode);
+    mode = 0;
+    scanf("%d", &mode);
     if (mode){
         /*
         char stra[65], strb[65];

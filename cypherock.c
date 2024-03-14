@@ -2,6 +2,32 @@
 
 curve_point alice_public_key;
 curve_point bob_public_key;
+int mode;
+
+#define DLEN 78
+char dec_2powi[LEN][DLEN];
+
+void pre(){
+    dec_2powi[0][0] = 1;
+    for (int i=1; i<DLEN; i++)
+        dec_2powi[0][i] = 0;
+    int carry = 0;
+    for (int i=1; i<LEN; i++)
+        for (int j=0; j<DLEN; j++){
+            dec_2powi[i][j] = 2*dec_2powi[i-1][j] + carry;
+            carry = dec_2powi[i][j]/10;
+            dec_2powi[i][j] %= 10;
+        }
+}
+
+static void add_dec(char *a, int idx){
+    int carry = 0;
+    for (int i=0; i<DLEN; i++){
+        a[i] += dec_2powi[idx][i] + carry;
+        carry = a[i]/10;
+        a[i] %= 10;
+    }
+}
 
 void bn_set_rand(bignum256 *x, const bignum256 *nf){
     int t;
@@ -16,14 +42,26 @@ void bn_set_rand(bignum256 *x, const bignum256 *nf){
 }
 
 void bn_print(const bignum256 *x){
-    // Following code doesn't work. It prints the limbs in hexadecimal.
-    // We need the number either in decimal or hexadecimal format (better will be both)
-    // Give line breaks accordingly
-
-    for (int i=BN_LIMBS-1; i>=0; i--)
-        printf("%08x ", x->val[i]);
+    uint8_t hex[LEN/8];
+    char dec[DLEN];
+    bn_write_le(x, hex);
+    int flag = 0;
+    printf("\tHexadecimal: ");
+    for (int i=LEN/8-1; i>=0; i--)
+        if ( (flag |= !!hex[i]) || !mode)
+            printf("%02x", hex[i]);
     printf("\n");
-    // printf("Hexadecimal:    ");
+
+    for (int i=0; i<DLEN; i++)
+        dec[i] = 0;
+    for (int i=0; i<LEN; i++)
+        if ((hex[i/8] >> (i%8)) & 1) add_dec(dec, i);
+    flag = 0;
+    printf("\tDecimal:     ");
+    for (int i=DLEN-1; i>=0; i--)
+        if ( (flag |= !!dec[i]) || !mode)
+            printf("%c", dec[i]+'0');
+    printf("\n");
 }
 
 void point_subt(const ecdsa_curve *curve, curve_point *cp1,
@@ -53,18 +91,16 @@ int point_is_on_curve(const curve_point *point) {
 }
 
 void get_hash(const bignum256 *x, bignum256 *res){
-    // res should contain the SHA3_256 hash of x. 
-    // Convert to array of unsigned char, 
-    // i.e., (unsigned char*) back and forth to use it
-    bn_copy(x,res);
-    bn_inverse(res, &secp256k1.prime);
-    bn_fast_mod(res, &secp256k1.prime);
-    bn_mod(res, &secp256k1.prime);
+    uint8_t in[LEN/8];
+    uint8_t out[LEN/8];
+    bn_write_le(x,in);
+    sha3_256(in, LEN/8, out);
+    bn_read_le(out, res);
 }
 
 void calc_additive_share(const bignum256 *x, bignum256 *res){
     // x is an array of length 256
-    // res = sigma (0 to 255) 2^i * x[i], in the modulo domain of prime.
+    // res = sigma (0 to LEN) 2^i * x[i], in the modulo domain of prime.
     bn_zero(res);
     for (uint16_t i=0; i<256; i++){
         bignum256 t;

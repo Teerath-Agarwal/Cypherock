@@ -7,7 +7,7 @@ SRC_CRYPTO_FULL = $(addprefix $(CRYPTODIR)/, $(SRC_CRYPTO))
 SRC = $(wildcard $(SRCDIR)/*.c) $(SRC_CRYPTO_FULL)
 OBJ = $(SRC:.c=.o)
 DEPS = $(wildcard $(SRCDIR)/*.h) $(patsubst %.c, $(CRYPTODIR)/%.h, $(SRC_CRYPTO))
-EXECUTABLE = my_program
+EXECUTABLE = run
 
 .PHONY: all clean
 
