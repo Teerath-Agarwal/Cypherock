@@ -20,8 +20,10 @@ void bn_print(const bignum256 *x){
     // We need the number either in decimal or hexadecimal format (better will be both)
     // Give line breaks accordingly
 
-    // for (int i=BN_LIMBS-1; i>=0; i--)
-    //     printf("%08x ", a.val[i]);
+    for (int i=BN_LIMBS-1; i>=0; i--)
+        printf("%08x ", x->val[i]);
+    printf("\n");
+    // printf("Hexadecimal:    ");
 }
 
 void point_subt(const ecdsa_curve *curve, curve_point *cp1,
@@ -54,11 +56,24 @@ void get_hash(const bignum256 *x, bignum256 *res){
     // res should contain the SHA3_256 hash of x. 
     // Convert to array of unsigned char, 
     // i.e., (unsigned char*) back and forth to use it
+    bn_copy(x,res);
+    bn_inverse(res, &secp256k1.prime);
+    bn_fast_mod(res, &secp256k1.prime);
+    bn_mod(res, &secp256k1.prime);
 }
 
 void calc_additive_share(const bignum256 *x, bignum256 *res){
     // x is an array of length 256
     // res = sigma (0 to 255) 2^i * x[i], in the modulo domain of prime.
+    bn_zero(res);
+    for (uint16_t i=0; i<256; i++){
+        bignum256 t;
+        bn_zero(&t);
+        bn_setbit(&t, i);
+        bn_multiply(&x[i], &t, &secp256k1.prime);
+        bn_addmod(res, &t, &secp256k1.prime);
+    }
+    bn_mod(res, &secp256k1.prime);
 }
 
 uint8_t hex_to_bin(const char x){
