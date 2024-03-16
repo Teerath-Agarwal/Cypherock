@@ -9,7 +9,7 @@ OBJ = $(SRC:.c=.o)
 DEPS = $(wildcard $(SRCDIR)/*.h) $(patsubst %.c, $(CRYPTODIR)/%.h, $(SRC_CRYPTO))
 EXECUTABLE = run
 
-.PHONY: all clean
+.PHONY: all clean doxy
 
 all: $(EXECUTABLE)
 
@@ -21,3 +21,14 @@ $(EXECUTABLE): $(OBJ)
 
 clean:
 	rm -f $(OBJ) $(EXECUTABLE)
+
+doxy:
+	@if ! command -v doxygen &> /dev/null; then \
+		echo "Error: doxygen is not installed. Please install doxygen."; \
+		exit 1; \
+	fi
+	@if ! command -v dot &> /dev/null; then \
+		echo "Error: graphviz is not installed. Please install graphviz."; \
+		exit 1; \
+	fi
+	doxygen Doxyfile

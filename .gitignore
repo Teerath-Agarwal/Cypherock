@@ -4,6 +4,7 @@
 *.o
 *.os
 .vscode/
+Documentation/
 crypto/tests/aestst
 crypto/tests/libtrezor-crypto.so
 crypto/tests/test_check
