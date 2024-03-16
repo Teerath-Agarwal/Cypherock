@@ -32,13 +32,15 @@ static void add_dec(char *a, int idx){
 void bn_set_rand(bignum256 *x, const bignum256 *nf){
     int t;
     uint8_t r[LEN/8];
-    for (int i = 0; i < LEN/8; i++) {
-        if (!(i % 4))
-            t = rand();
-        r[i] = (t >> ((i % 4) * 8)) & 0xFF;
-    }
-    bn_read_be(r, x);
-    bn_mod(x, nf);
+    do{
+        for (int i = 0; i < LEN/8; i++) {
+            if (!(i % 4))
+                t = rand();
+            r[i] = (t >> ((i % 4) * 8)) & 0xFF;
+        }
+        bn_read_be(r, x);
+        bn_mod(x, nf);
+    } while (bn_is_zero(x));
 }
 
 void bn_print(const bignum256 *x){

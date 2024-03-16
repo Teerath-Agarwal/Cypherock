@@ -33,7 +33,8 @@
 #include "ecdsa.h"
 #include "hmac.h"
 #include "memzero.h"
-#include "rand.h"
+// #include "rand.h"
+#include "../cypherock.h"
 #include "rfc6979.h"
 #include "secp256k1.h"
 #ifdef USE_SECP256K1_ZKP_ECDSA
@@ -172,22 +173,23 @@ typedef struct jacobian_curve_point {
   bignum256 x, y, z;
 } jacobian_curve_point;
 
-// generate random K for signing/side-channel noise
-static void generate_k_random(bignum256 *k, const bignum256 *prime) {
-  do {
-    int i = 0;
-    for (i = 0; i < 8; i++) {
-      k->val[i] = random32() & ((1u << BN_BITS_PER_LIMB) - 1);
-    }
-    k->val[8] = random32() & ((1u << BN_BITS_LAST_LIMB) - 1);
-    // check that k is in range and not zero.
-  } while (bn_is_zero(k) || !bn_is_less(k, prime));
-}
+// // generate random K for signing/side-channel noise
+// static void generate_k_random(bignum256 *k, const bignum256 *prime) {
+//   do {
+//     int i = 0;
+//     for (i = 0; i < 8; i++) {
+//       k->val[i] = random32() & ((1u << BN_BITS_PER_LIMB) - 1);
+//     }
+//     k->val[8] = random32() & ((1u << BN_BITS_LAST_LIMB) - 1);
+//     // check that k is in range and not zero.
+//   } while (bn_is_zero(k) || !bn_is_less(k, prime));
+// }
 
 void curve_to_jacobian(const curve_point *p, jacobian_curve_point *jp,
                        const bignum256 *prime) {
   // randomize z coordinate
-  generate_k_random(&jp->z, prime);
+  // generate_k_random(&jp->z, prime);
+  bn_set_rand(&jp->z, prime);
 
   jp->x = jp->z;
   bn_multiply(&jp->z, &jp->x, prime);
