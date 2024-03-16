@@ -4,13 +4,25 @@ This repository is used to generate additive shares of multiplication of two int
 
 ## Usage
 
-Execute the following commands:
+Execute the main project using the following commands:
 
 ```
 $ git clone git@github.com:Teerath-Agarwal/Cypherock.git
 $ cd Cypherock/
 $ make
-# ./run
+$ ./run
+```
+
+To clean the object files afterwards:
+
+```
+$ make clean
+```
+
+To generate the documentation for this project, (make sure you have doxygen and graphviz installed):
+
+```
+$ make doxy
 ```
 
 ### Input / Output Format
