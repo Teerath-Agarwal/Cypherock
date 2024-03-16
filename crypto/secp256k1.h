@@ -25,8 +25,6 @@
 #define __SECP256K1_H__
 
 #include <stdint.h>
-
-// #include "bip32.h"
 #include "ecdsa.h"
 
 extern const ecdsa_curve secp256k1;
