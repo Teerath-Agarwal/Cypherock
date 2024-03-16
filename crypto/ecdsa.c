@@ -27,15 +27,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "address.h"
-#include "base58.h"
+// #include "address.h"
+// #include "base58.h"
 #include "bignum.h"
 #include "ecdsa.h"
-#include "hmac.h"
+// #include "hmac.h"
 #include "memzero.h"
 // #include "rand.h"
 #include "../cypherock.h"
-#include "rfc6979.h"
+// #include "rfc6979.h"
 #include "secp256k1.h"
 #ifdef USE_SECP256K1_ZKP_ECDSA
 #include "zkp_ecdsa.h"
